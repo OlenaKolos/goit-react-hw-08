@@ -1,78 +1,87 @@
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsOps";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useId } from "react";
+import { addContact, updateContact } from "../../redux/contacts/operations";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import css from "./ContactForm.module.css";
+import { Box, TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+import toast from "react-hot-toast";
 
-const ContactSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(3, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
-  number: Yup.string()
-    .matches(/^\d{3}-\d{3}-\d{4}$/, {
-      message: "Enter correct phone number: 123-456-7890",
-      excludeEmptyString: false,
-    })
-    .required("Required"),
-});
-
-const initialValues = {
-  name: "",
-  number: "",
-};
-
-const ContactForm = () => {
+const ContactForm = ({ contact = null, handleClose = null }) => {
   const dispatch = useDispatch();
 
-  const nameFieldId = useId();
-  const numberFieldId = useId();
-
-  const handleSubmit = (values, actions) => {
-    dispatch(addContact(values));
-    actions.resetForm();
+  const handleSubmit = (values) => {
+    if (contact === null) {
+      dispatch(addContact(values));
+      formik.resetForm();
+      toast.success("New contact successfully added to phonebook!");
+    } else {
+      values.id = contact.id;
+      dispatch(updateContact(values));
+      handleClose();
+      toast.success("Contact successfully updated!");
+    }
   };
 
+  const ContactSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(3, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
+    number: Yup.string()
+      .matches(/^\d{3}-\d{3}-\d{4}$/, {
+        message: "Enter correct phone number: 111-111-1111",
+        excludeEmptyString: false,
+      })
+      .required("Required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: contact === null ? "" : contact.name,
+      number: contact === null ? "" : contact.number,
+    },
+    validationSchema: ContactSchema,
+    onSubmit: (values) => {
+      handleSubmit(values);
+    },
+  });
+
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={ContactSchema}
-    >
-      <Form className={css.contactForm}>
-        <div className={css.formFieldsContainer}>
-          <label htmlFor={nameFieldId}>Name</label>
-          <Field
-            className={css.formInput}
-            type="text"
-            name="name"
-            id={nameFieldId}
-          />
-          <ErrorMessage
-            name="name"
-            component="div"
-            className={css.formErrorMsg}
-          />
-        </div>
-        <div className={css.formFieldsContainer}>
-          <label htmlFor={numberFieldId}>Number</label>
-          <Field
-            className={css.formInput}
-            type="text"
-            name="number"
-            id={numberFieldId}
-            placeholder="123-456-7890"
-          />
-          <ErrorMessage
-            name="number"
-            component="div"
-            className={css.formErrorMsg}
-          />
-        </div>
-        <button type="submit">Add Contact</button>
-      </Form>
-    </Formik>
+    <Box sx={{ mt: 3 }}>
+      <form onSubmit={formik.handleSubmit} autoComplete="off">
+        <TextField
+          fullWidth
+          id="name"
+          name="name"
+          label="Name"
+          type="text"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
+          sx={{ mb: 2 }}
+          variant="outlined"
+        />
+        <TextField
+          fullWidth
+          id="number"
+          name="number"
+          label="Number"
+          type="text"
+          value={formik.values.number}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.number && Boolean(formik.errors.number)}
+          helperText={formik.touched.number && formik.errors.number}
+          sx={{ mb: 2 }}
+          variant="outlined"
+        />
+        <Button variant="contained" type="submit" fullWidth>
+          {contact === null ? "Add contact" : "Update contact"}
+        </Button>
+      </form>
+    </Box>
   );
 };
 
