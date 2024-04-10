@@ -1,14 +1,3 @@
-// import { configureStore } from "@reduxjs/toolkit";
-// import { contactsReducer } from "./contactsSlice";
-// import { filterReducer } from "./filtersSlice";
-
-// export const store = configureStore({
-//   reducer: {
-//     contacts: contactsReducer,
-//     filters: filterReducer,
-//   },
-// });
-
 import { configureStore } from "@reduxjs/toolkit";
 import {
   persistStore,
@@ -43,10 +32,10 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
-  devTools:
-    typeof window !== "undefined" &&
-    window.__REDUX_DEVTOOLS_EXTENSION__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION__(),
+  // devTools:
+  //   typeof window !== "undefined" &&
+  //   window.__REDUX_DEVTOOLS_EXTENSION__ &&
+  //   window.__REDUX_DEVTOOLS_EXTENSION__(),
 
   //devTools: process.env.NODE_ENV === "development",
 });
