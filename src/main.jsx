@@ -1,21 +1,3 @@
-// import React from "react";
-// import ReactDOM from "react-dom/client";
-// import App from "./components/App/App";
-// import { Provider } from "react-redux";
-// import { store } from "./redux/store";
-// //import { persistor, store } from "./redux/store";
-// //import { PersistGate } from "redux-persist/integration/react";
-// import "modern-normalize";
-// import "./index.css";
-
-// ReactDOM.createRoot(document.getElementById("root")).render(
-//   <React.StrictMode>
-//     <Provider store={store}>
-//       <App />
-//     </Provider>
-//   </React.StrictMode>
-// );
-
 import React from "react";
 import { HelmetProvider } from "react-helmet-async";
 import ReactDOM from "react-dom/client";
@@ -29,7 +11,9 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 const theme = createTheme({
   palette: {
-    mode: "light",
+    primary: {
+      main: "#387ADF",
+    },
   },
 });
 

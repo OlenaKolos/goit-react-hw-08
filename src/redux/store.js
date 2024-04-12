@@ -11,7 +11,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { contactsReducer } from "./contacts/contactsSlice";
-import { filtersReducer } from "./contacts/filtersSlice";
+import { filtersReducer } from "./filters/filtersSlice";
 import { authReducer } from "./auth/slice";
 
 const authPersistConfig = {
@@ -32,12 +32,6 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
-  // devTools:
-  //   typeof window !== "undefined" &&
-  //   window.__REDUX_DEVTOOLS_EXTENSION__ &&
-  //   window.__REDUX_DEVTOOLS_EXTENSION__(),
-
-  //devTools: process.env.NODE_ENV === "development",
 });
 
 export const persistor = persistStore(store);
