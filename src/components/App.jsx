@@ -9,7 +9,7 @@ import { useAuth } from "../hooks";
 import Loader from "./Loader/Loader";
 
 const HomePage = lazy(() => import("../pages/HomePage"));
-const RegisterPage = lazy(() => import("../pages/RegisterPage"));
+const RegisterPage = lazy(() => import("../pages/RegistrationPage"));
 const LoginPage = lazy(() => import("../pages/LoginPage"));
 const ContactsPage = lazy(() => import("../pages/ContactsPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
